@@ -23,10 +23,8 @@ public class BootApplication {
 	public EmbeddedServletContainerFactory servletContainer() {
 
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
-
 			@Override
 			protected void postProcessContext(Context context) {
-
 				SecurityConstraint securityConstraint = new SecurityConstraint();
 				securityConstraint.setUserConstraint("CONFIDENTIAL");
 				SecurityCollection collection = new SecurityCollection();

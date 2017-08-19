@@ -1,4 +1,4 @@
-package devLib.mq.jms;
+package devLib.mq.jms.v1;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;

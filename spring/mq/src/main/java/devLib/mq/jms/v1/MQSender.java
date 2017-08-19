@@ -1,4 +1,4 @@
-package devLib.mq.jms;
+package devLib.mq.jms.v1;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;

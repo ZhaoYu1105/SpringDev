@@ -5,18 +5,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>devLib</groupId>
-		<artifactId>spring</artifactId>
+		<artifactId>mq</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
-	<artifactId>mq</artifactId>
-	<name>mq</name>
+	<artifactId>mq-jmsv1</artifactId>
+	<name>mq-jmsv1</name>
 	<url>http://maven.apache.org</url>
-
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.15.0</version>
+		</dependency>
 	</dependencies>
-	<packaging>pom</packaging>
-	<modules>
-		<module>mq-jmsv1</module>
-		<module>mq-jmsv2</module>
-	</modules>
+	
 </project>

@@ -7,9 +7,9 @@ public class JMSReceiverV2 {
 	public static void main(String[] args) {
 
 	}
-	
+
 	public void CreateContext(ConnectionFactory factory) {
-	
+		
 	}
 
 }

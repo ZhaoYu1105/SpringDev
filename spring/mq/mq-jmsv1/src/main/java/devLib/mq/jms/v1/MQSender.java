@@ -48,6 +48,7 @@ public class MQSender {
 		try {
 			message = session.createTextMessage();
 			message.setText(str);
+			
 			producer.send(message);
 		} catch (JMSException e) {
 			e.printStackTrace();

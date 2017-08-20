@@ -10,6 +10,11 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+/**
+ * 
+ * @author 缪云海[miaoyunhai@cmhi.chinamobile.com]
+ *
+ */
 public class MQReceiver extends Thread {
 
 	private volatile boolean running = true;
@@ -29,7 +34,7 @@ public class MQReceiver extends Thread {
 			connection = factory.createConnection();
 			connection.start();
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			Queue queue = session.createQueue("myQueue");
+			Queue queue = session.createQueue("exampleQueue");
 			consumer = session.createConsumer(queue);
 
 		} catch (Exception e) {

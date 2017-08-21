@@ -31,7 +31,7 @@ public class MQSender {
 	static String str = "[{'flag':'1','value':'8854c92e92404b188e63c4031db0eac9','label':'交换机(虚机)'},{'flag':'1','value':'8854c92e92404b188e63c4031db0eac9','label':'交换机(虚机)'}]";
 
 	public static void initConnection() throws Exception {
-		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("tcp://172.16.229.131:61616");
 		connection = factory.createConnection();
 		connection.start();
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

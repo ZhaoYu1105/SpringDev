@@ -40,18 +40,18 @@ public class JMSSenderV2 extends BaseMessage {
 		context = super.getContext();
 		producer = context.createProducer();
 		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-		producer.setAsync(new CompletionListener() {
-			
-			@Override
-			public void onException(Message message, Exception exception) {
-				
-			}
-			
-			@Override
-			public void onCompletion(Message message) {
-				
-			}
-		});
+//		producer.setAsync(new CompletionListener() {
+//			
+//			@Override
+//			public void onException(Message message, Exception exception) {
+//				
+//			}
+//			
+//			@Override
+//			public void onCompletion(Message message) {
+//				
+//			}
+//		});
 		
 		System.out.println("JMS Connection established......");
 	}
@@ -66,7 +66,7 @@ public class JMSSenderV2 extends BaseMessage {
 	}
 
 	public static void main(String[] args) throws Exception {
-		JMSSenderV2 sender = new JMSSenderV2("tcp://localhost:61616");
+		JMSSenderV2 sender = new JMSSenderV2("tcp://172.16.229.131:61616");
 		sender.init();
 
 		int threads = 1;

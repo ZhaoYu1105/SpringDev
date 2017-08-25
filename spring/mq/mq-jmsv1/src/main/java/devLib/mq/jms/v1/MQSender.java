@@ -50,6 +50,7 @@ public class MQSender {
 		try {
 			message = session.createTextMessage();
 			message.setText(str);
+			message.setJMSExpiration(1000);
 
 			producer.send(message);
 		} catch (JMSException e) {
@@ -65,7 +66,7 @@ public class MQSender {
 
 		initConnection();
 
-		AtomicInteger counters = new AtomicInteger(0);
+		final AtomicInteger counters = new AtomicInteger(0);
 		ExecutorService es = Executors.newFixedThreadPool(10);
 		final CountDownLatch cdl = new CountDownLatch(size);
 		long start = System.currentTimeMillis();

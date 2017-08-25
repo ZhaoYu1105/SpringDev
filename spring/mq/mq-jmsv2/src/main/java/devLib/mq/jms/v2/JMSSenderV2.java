@@ -66,12 +66,12 @@ public class JMSSenderV2 extends BaseMessage {
 	}
 
 	public static void main(String[] args) throws Exception {
-		JMSSenderV2 sender = new JMSSenderV2("tcp://172.16.229.131:61616");
+		final JMSSenderV2 sender = new JMSSenderV2("tcp://172.16.229.131:61616");
 		sender.init();
 
 		int threads = 1;
 		int size = 1000000;
-		AtomicInteger counters = new AtomicInteger(0);
+		final AtomicInteger counters = new AtomicInteger(0);
 
 		ExecutorService es = Executors.newFixedThreadPool(threads);
 		final CountDownLatch cdl = new CountDownLatch(size);

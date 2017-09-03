@@ -22,81 +22,85 @@ import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
  */
 public class JMSSenderV2 extends BaseMessage {
 
-	private Queue queue;
-	private JMSContext context;
-	private JMSProducer producer;
-	private String msg = "[{'flag':'1','value':'8854c92e92404b188e63c4031db0eac9','label':'交换机(虚机)'},{'flag':'1','value':'8854c92e92404b188e63c4031db0eac9','label':'交换机(虚机)'}]";
+    private Queue       queue;
+    private JMSContext  context;
+    private JMSProducer producer;
+    private String      msg = "[{'flag':'1','value':'8854c92e92404b188e63c4031db0eac9','label':'交换机(虚机)'},{'flag':'1','value':'8854c92e92404b188e63c4031db0eac9','label':'交换机(虚机)'}]";
 
-	public JMSSenderV2(String url) {
-		super(url);
-	}
+    public JMSSenderV2(String url) {
+        super(url);
+    }
 
-	public JMSSenderV2(String url, String user, String password) {
-		super(url, user, password);
-	}
+    public JMSSenderV2(String url, String user, String password) {
+        super(url, user, password);
+    }
 
-	public void init() {
-		queue = ActiveMQJMSClient.createQueue("exampleQueue");
-		context = super.getContext();
-		producer = context.createProducer();
-		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-//		producer.setAsync(new CompletionListener() {
-//			
-//			@Override
-//			public void onException(Message message, Exception exception) {
-//				
-//			}
-//			
-//			@Override
-//			public void onCompletion(Message message) {
-//				
-//			}
-//		});
-		
-		System.out.println("JMS Connection established......");
-	}
+    public void init() {
+        queue = ActiveMQJMSClient.createQueue("exampleQueue");
+        context = super.getContext();
+        producer = context.createProducer();
+        producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+        // producer.setAsync(new CompletionListener() {
+        //
+        // @Override
+        // public void onException(Message message, Exception exception) {
+        //
+        // }
+        //
+        // @Override
+        // public void onCompletion(Message message) {
+        //
+        // }
+        // });
 
-	public void sendMessage() {
-		TextMessage message = context.createTextMessage(msg);
-		producer.send(queue, message);
-	}
+        System.out.println("JMS Connection established......");
+    }
 
-	public void close() {
-		context.close();
-	}
+    public void sendMessage() {
+        TextMessage message = context.createTextMessage(msg);
+        producer.send(queue, message);
+    }
 
-	public static void main(String[] args) throws Exception {
-		final JMSSenderV2 sender = new JMSSenderV2("tcp://172.16.229.131:61616");
-		sender.init();
+    public void close() {
+        context.close();
+    }
 
-		int threads = 1;
-		int size = 1000000;
-		final AtomicInteger counters = new AtomicInteger(0);
+    public static void main(String[] args) throws Exception {
+        String url = "";
+        url = "tcp://172.16.229.131:61616";
+        // 新座压测机器
+        url = "tcp://192.168.192.201:61616";
+        final JMSSenderV2 sender = new JMSSenderV2(url);
+        sender.init();
 
-		ExecutorService es = Executors.newFixedThreadPool(threads);
-		final CountDownLatch cdl = new CountDownLatch(size);
+        int threads = 1;
+        int size = 1000000;
+        final AtomicInteger counters = new AtomicInteger(0);
 
-		long start = System.currentTimeMillis();
-		for (int a = 0; a < size; a++) {
-			es.execute(new Runnable() {
-				@Override
-				public void run() {
-					sender.sendMessage();
-					cdl.countDown();
+        ExecutorService es = Executors.newFixedThreadPool(threads);
+        final CountDownLatch cdl = new CountDownLatch(size);
 
-					if (0 == counters.incrementAndGet() % 10000) {
-						double ts = ((double) (System.currentTimeMillis() / 100) / 10);
-						System.out.println(ts + ", total :" + counters.get());
-					}
-				}
-			});
-		}
-		cdl.await();
-		es.shutdown();
+        long start = System.currentTimeMillis();
+        for (int a = 0; a < size; a++) {
+            es.execute(new Runnable() {
+                @Override
+                public void run() {
+                    sender.sendMessage();
+                    cdl.countDown();
 
-		long time = System.currentTimeMillis() - start;
-		System.out.println("插入" + size + "条JSON，共消耗：" + (double) time / 1000 + " s");
-		System.out.println("平均：" + size / ((double) time / 1000) + " 条/秒");
-	}
+                    if (0 == counters.incrementAndGet() % 10000) {
+                        double ts = ((double) (System.currentTimeMillis() / 100) / 10);
+                        System.out.println(ts + ", total :" + counters.get());
+                    }
+                }
+            });
+        }
+        cdl.await();
+        es.shutdown();
+
+        long time = System.currentTimeMillis() - start;
+        System.out.println("插入" + size + "条JSON，共消耗：" + (double) time / 1000 + " s");
+        System.out.println("平均：" + size / ((double) time / 1000) + " 条/秒");
+    }
 
 }

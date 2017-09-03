@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>web.framework</groupId>
@@ -10,8 +10,159 @@
 	<artifactId>framework-service-base</artifactId>
 	<name>framework-service-base</name>
 	<url>http://maven.apache.org</url>
+
 	<properties>
+		<!-- <dubbo.version>2.5.4-snapshot</dubbo.version> <spring.version>4.3.10.RELEASE</spring.version> -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.7</java.version>
+
+		<spring.version>4.3.10.RELEASE</spring.version>
+		<dubbo.version>2.5.3</dubbo.version>
+		<jersey-client.version>1.19.1</jersey-client.version>
+		<zkclient.version>0.1</zkclient.version>
+		<logging.version>1.2</logging.version>
+		<log4j.version>1.2.15</log4j.version>
+		<logback.version>1.1.7</logback.version>
+
+		<maven.clean.version>2.6.1</maven.clean.version>
+		<maven.compiler.version>3.3</maven.compiler.version>
+		<maven.resources.version>2.6</maven.resources.version>
 	</properties>
+
+	<dependencies>
+		<!-- <dependency> <groupId>com.alibaba</groupId> <artifactId>dubbo</artifactId> 
+			<version>${dubbo.version}</version> </dependency> <dependency> <groupId>javassist</groupId> 
+			<artifactId>javassist</artifactId> <version>3.12.1.GA</version> </dependency> 
+			<dependency> <groupId>org.jboss.netty</groupId> <artifactId>netty</artifactId> 
+			<version>3.2.5.Final</version> </dependency> <dependency> <groupId>com.github.sgroschupf</groupId> 
+			<artifactId>zkclient</artifactId> <version>0.1</version> </dependency> -->
+		<dependency>
+			<groupId>web.framework</groupId>
+			<artifactId>framework-java</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+
+		<!-- dubbo -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>${dubbo.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.sgroschupf</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>${zkclient.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>junit</artifactId>
+					<groupId>junit</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- 日志 -->
+		<dependency>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+			<version>${logging.version}</version>
+		</dependency>
+		<dependency>
+			<artifactId>log4j</artifactId>
+			<groupId>log4j</groupId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven.clean.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resources.version}</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- 下载jar包的远程仓库配置 -->
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>team nexus repository</name>
+			<url>http://172.23.12.234/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>zdyy-releases</id>
+			<name>team nexus repository</name>
+			<url>http://172.23.12.234/nexus/content/repositories/zdyy</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>zdyy-snapshots</id>
+			<name>team nexus repository</name>
+			<url>http://172.23.12.234/nexus/content/repositories/zdyy_snapshot</url>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>

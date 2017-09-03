@@ -25,5 +25,6 @@
   <modules>
   	<module>framework-api</module>
   	<module>framework-service</module>
+  	<module>framework-java</module>
   </modules>
 </project>

@@ -61,9 +61,7 @@ public class CounterFilter implements Filter {
         }
 
         atomicCounter.incrementAndGet();
-        // System.out.println(String.format("Counter= %d\tPath= %s",
-        // atomicCounter.get(),
-        // uri));
+        System.out.println(String.format("Counter= %d\tPath= %s", atomicCounter.get(), uri));
 
         arg2.doFilter(arg0, arg1);
     }

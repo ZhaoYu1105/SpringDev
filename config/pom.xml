@@ -8,18 +8,4 @@
 	<modules>
 		<module>config-java</module>
 	</modules>
-
-	<properties>
-		<zkclient.version>0.1</zkclient.version>
-	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.github.sgroschupf</groupId>
-				<artifactId>zkclient</artifactId>
-				<version>${zkclient.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>

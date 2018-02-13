@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.cmcc</groupId>
+	<artifactId>dhome-rpc</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>dhome-rpc-api</module>
+		<module>dhome-rpc-java</module>
+		<module>dhome-rpc-provider</module>
+	</modules>
+
+	<properties>
+		<logging.version>1.2</logging.version>
+		<log4j.version>1.2.15</log4j.version>
+		<dubbo.version>2.6.0</dubbo.version>
+		<spring.version>4.3.10.RELEASE</spring.version>
+
+		<zkclient.version>0.1</zkclient.version>
+		<zookeeper.version>3.3.3</zookeeper.version>
+
+		<zeus-base.version>0.0.11</zeus-base.version>
+		<zeus-base-core.version>0.0.20</zeus-base-core.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>dubbo</artifactId>
+				<version>${dubbo.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.cmcc.zeus</groupId>
+				<artifactId>zeus-base-bean</artifactId>
+				<version>${zeus-base.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.cmcc.zeus</groupId>
+				<artifactId>zeus-base-core</artifactId>
+				<version>${zeus-base-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.sgroschupf</groupId>
+				<artifactId>zkclient</artifactId>
+				<version>${zkclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>${zookeeper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>4.0.56.Final</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+			<version>${logging.version}</version>
+		</dependency>
+		<dependency>
+			<artifactId>log4j</artifactId>
+			<groupId>log4j</groupId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>team nexus repository</name>
+			<url>http://172.23.12.234/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>zdyy-releases</id>
+			<name>team nexus repository</name>
+			<url>http://172.23.12.234/nexus/content/repositories/zdyy</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>zdyy-snapshots</id>
+			<name>team nexus repository</name>
+			<url>http://172.23.12.234/nexus/content/repositories/zdyy_snapshot</url>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

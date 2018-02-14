@@ -1,4 +1,4 @@
-package dhome.rpc.java;
+package dhome.rpc.spi;
 
 public interface RpcInterface {
 	String getName();

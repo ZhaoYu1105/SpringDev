@@ -15,17 +15,16 @@
   default-lazy-init="false">
 
   <dubbo:application name="dhome-rpc-provider" />
-  <dubbo:provider server="netty4" />
+  <dubbo:consumer client="netty4" />
   <dubbo:protocol name="dubbo" port="20880" />
 
   <!-- <dubbo:registry id="dhome-rpc" protocol="dubbo" address="zookeeper://172.23.26.96:2181?backup=172.23.26.104:2181,172.23.26.105:2181" 
-    check="true" subscribe="true" register="true"> </dubbo:registry> -->
+    check="true" subscribe="true" register="false"> </dubbo:registry> -->
 
-  <!---->
   <dubbo:registry id="dhome-rpc" protocol="dubbo" address="zookeeper://127.0.0.1:2181" check="true"
-    subscribe="true" register="true">
+    subscribe="true" register="false">
   </dubbo:registry>
 
-  <dubbo:service registry="dhome-rpc" interface="dhome.rpc.spi.RpcInterface" ref="rpc" />
+  <dubbo:reference id="rpcService" registry="dhome-rpc" interface="dhome.rpc.spi.RpcInterface" />
 
 </beans>

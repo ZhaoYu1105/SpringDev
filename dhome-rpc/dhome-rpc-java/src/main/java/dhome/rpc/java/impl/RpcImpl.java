@@ -1,6 +1,8 @@
 package dhome.rpc.java.impl;
 
-import dhome.rpc.java.RpcInterface;
+import java.util.Date;
+
+import dhome.rpc.spi.RpcInterface;
 
 public class RpcImpl implements RpcInterface {
 
@@ -10,7 +12,7 @@ public class RpcImpl implements RpcInterface {
 	
 	@Override
 	public String getName() {
-		return "12345678";
+		return (new Date()).toString();
 	}
 
 }

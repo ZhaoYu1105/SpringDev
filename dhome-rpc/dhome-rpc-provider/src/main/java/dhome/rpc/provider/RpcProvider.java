@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-public class RpcRun {
+public class RpcProvider {
 
 	public static void main(String[] args) throws Exception {
 		initApplicationContext();

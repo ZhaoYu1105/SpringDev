@@ -9,6 +9,8 @@
 		<module>dhome-rpc-api</module>
 		<module>dhome-rpc-java</module>
 		<module>dhome-rpc-provider</module>
+		<module>dhome-rpc-consumer</module>
+		<module>dhome-rpc-spi</module>
 	</modules>
 
 	<properties>

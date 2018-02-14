@@ -7,9 +7,10 @@
     <artifactId>dhome-rpc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>dhome-rpc-provider</artifactId>
-  <name>dhome-rpc-provider</name>
+  <artifactId>dhome-rpc-consumer</artifactId>
+  <name>dhome-rpc-consumer</name>
   <url>http://maven.apache.org</url>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -22,11 +23,11 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.cmcc</groupId>
-      <artifactId>dhome-rpc-java</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+  <dependency>
+    <groupId>com.cmcc</groupId>
+    <artifactId>dhome-rpc-java</artifactId>
+    <version>${project.version}</version>
+  </dependency>
     <dependency>
       <groupId>com.cmcc</groupId>
       <artifactId>dhome-rpc-spi</artifactId>

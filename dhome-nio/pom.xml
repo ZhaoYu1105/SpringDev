@@ -10,6 +10,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <netty.version>4.1.22.Final</netty.version>
+    <fastjson.version>1.2.35</fastjson.version>
   </properties>
 
   <modules>
@@ -23,6 +24,11 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

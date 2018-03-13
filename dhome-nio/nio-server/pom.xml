@@ -29,7 +29,12 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>22.0</version>
+      <version>18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>dhome</groupId>
+      <artifactId>nio-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

@@ -15,8 +15,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
@@ -27,7 +27,7 @@ import io.netty.util.CharsetUtil;
 public class TCPServer {
     private String           serverName      = "nio";
     private int              maxLength       = 20480;
-    private int              port            = 15600;
+    private int              port            = 15683;
 
     private int              numberOfThreads = Runtime.getRuntime().availableProcessors() * 2;
 
@@ -39,8 +39,8 @@ public class TCPServer {
         ThreadFactory bossThreadFactory = new ThreadFactoryBuilder().setNameFormat(getServerName() + " Server Acceptor NIO Thread#%d").build();
         ThreadFactory workerThreadFactory = new ThreadFactoryBuilder().setNameFormat(getServerName() + " Server Reactor NIO Thread#%d").build();
 
-        bossGroup = new DefaultEventLoopGroup(numberOfThreads, bossThreadFactory);
-        workerGroup = new DefaultEventLoopGroup(numberOfThreads, workerThreadFactory);
+        bossGroup = new NioEventLoopGroup(numberOfThreads, bossThreadFactory);
+        workerGroup = new NioEventLoopGroup(numberOfThreads, workerThreadFactory);
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();

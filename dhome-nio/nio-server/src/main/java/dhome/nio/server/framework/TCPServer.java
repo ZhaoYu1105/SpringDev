@@ -3,6 +3,9 @@ package dhome.nio.server.framework;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import dhome.nio.server.framework.handler.EchoServerHandler;
@@ -25,6 +28,9 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.CharsetUtil;
 
 public class TCPServer {
+
+    final Logger             log             = LoggerFactory.getLogger(this.getClass().getName());
+
     private String           serverName      = "nio";
     private int              maxLength       = 20480;
     private int              port            = 15683;
@@ -56,12 +62,16 @@ public class TCPServer {
                     pipeline.addLast("msgEncoder", new OutMessageEncoder());
                     pipeline.addLast("echoHandler", new EchoServerHandler());
                 }
-            }).option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true)
-                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT).childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+            }).option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                    .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                     .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
+            // .option(ChannelOption.SO_KEEPALIVE,
+            // true).option(ChannelOption.TCP_NODELAY, true)
 
+            log.info("starting...");
             ChannelFuture future = bootstrap.bind(getPort()).sync();
             future.channel().closeFuture().sync();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

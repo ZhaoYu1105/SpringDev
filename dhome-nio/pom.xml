@@ -16,6 +16,7 @@
 	<modules>
 		<module>nio-core</module>
 		<module>nio-server</module>
+		<module>nio-client</module>
 	</modules>
 
 	<dependencies>

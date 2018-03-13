@@ -7,8 +7,8 @@
     <artifactId>dhome-nio</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>nio-server</artifactId>
-  <name>nio-server</name>
+  <artifactId>nio-client</artifactId>
+  <name>nio-client</name>
   <url>http://maven.apache.org</url>
 
   <properties>

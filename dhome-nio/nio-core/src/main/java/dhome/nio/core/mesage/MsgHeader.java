@@ -3,14 +3,14 @@ package dhome.nio.core.mesage;
 import java.io.Serializable;
 
 /**
- * 消息头
+ * 固定消息头，不允许扩展
  * 
  * @author 缪云海[miaoyunhai@cmhi.chinamobile.com]
  * @date 2018年3月13日 - 上午8:57:23
  * @history
  *          2018年3月13日 - 上午8:57:23 缪云海[miaoyunhai@cmhi.chinamobile.com] create.
  */
-public class MsgHeader implements Serializable {
+public final class MsgHeader implements Serializable {
 
     private static final long serialVersionUID = -6363083563957752216L;
 

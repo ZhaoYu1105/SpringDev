@@ -11,6 +11,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import dhome.nio.server.framework.handler.EchoServerHandler;
 import dhome.nio.server.framework.handler.InMessageDecoder;
 import dhome.nio.server.framework.handler.OutMessageEncoder;
+import dhome.nio.server.framework.handler.StringToByteEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
@@ -58,6 +59,7 @@ public class TCPServer {
                     pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(3, TimeUnit.SECONDS));
                     pipeline.addLast("lineBasedFrameDecoder-" + maxLength, new LineBasedFrameDecoder(maxLength));// 按行('\n')解析成命令ByteBuf
                     pipeline.addLast("stringPluginMessageDecoder", new StringDecoder(CharsetUtil.UTF_8));
+                    pipeline.addLast("strToByteEncoder", new StringToByteEncoder());
                     pipeline.addLast("msgDecoder", new InMessageDecoder());
                     pipeline.addLast("msgEncoder", new OutMessageEncoder());
                     pipeline.addLast("echoHandler", new EchoServerHandler());

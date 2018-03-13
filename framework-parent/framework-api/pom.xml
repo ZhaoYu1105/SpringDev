@@ -18,7 +18,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<dubbo.version>2.5.3</dubbo.version>
+		<dubbo.version>2.6.0</dubbo.version>
 		<spring.version>4.3.10.RELEASE</spring.version>
 	</properties>
 

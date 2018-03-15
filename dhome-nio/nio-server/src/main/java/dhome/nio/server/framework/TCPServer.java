@@ -25,6 +25,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.CharsetUtil;
 
@@ -51,22 +53,23 @@ public class TCPServer {
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+            bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024)
+                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT).childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                    .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT).handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
 
-                @Override
-                protected void initChannel(SocketChannel ch) throws Exception {
-                    ChannelPipeline pipeline = ch.pipeline();
-                    pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(3, TimeUnit.SECONDS));
-                    pipeline.addLast("lineBasedFrameDecoder-" + maxLength, new LineBasedFrameDecoder(maxLength));// 按行('\n')解析成命令ByteBuf
-                    pipeline.addLast("stringPluginMessageDecoder", new StringDecoder(CharsetUtil.UTF_8));
-                    pipeline.addLast("strToByteEncoder", new StringToByteEncoder());
-                    pipeline.addLast("msgDecoder", new InMessageDecoder());
-                    pipeline.addLast("msgEncoder", new OutMessageEncoder());
-                    pipeline.addLast("echoHandler", new EchoServerHandler());
-                }
-            }).option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(3, TimeUnit.SECONDS));
+                            pipeline.addLast("lineBasedFrameDecoder-" + maxLength, new LineBasedFrameDecoder(maxLength));// 按行('\n')解析成命令ByteBuf
+                            pipeline.addLast("stringPluginMessageDecoder", new StringDecoder(CharsetUtil.UTF_8));
+                            pipeline.addLast("strToByteEncoder", new StringToByteEncoder());
+                            pipeline.addLast("msgDecoder", new InMessageDecoder());
+                            pipeline.addLast("msgEncoder", new OutMessageEncoder());
+                            pipeline.addLast("echoHandler", new EchoServerHandler());
+                        }
+                    });
             // .option(ChannelOption.SO_KEEPALIVE,
             // true).option(ChannelOption.TCP_NODELAY, true)
 

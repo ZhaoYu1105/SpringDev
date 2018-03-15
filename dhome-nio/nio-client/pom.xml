@@ -36,5 +36,10 @@
       <artifactId>nio-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>dhome</groupId>
+    	<artifactId>nio-server</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

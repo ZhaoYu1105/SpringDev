@@ -1,4 +1,4 @@
-package dhome.nio.core.mesage;
+package dhome.nio.core.mesage.base;
 
 import java.io.Serializable;
 

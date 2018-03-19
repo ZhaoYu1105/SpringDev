@@ -10,21 +10,27 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 public class EchoServerHandler extends SimpleChannelInboundHandler<Message> {
 
-    final Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private String mac;
+    final Logger   log = LoggerFactory.getLogger(this.getClass().getName());
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        log.info(msg.toString());
-        
+        mac = msg.toString();
+
         PongMessage ponMsg = PongMessage.create(msg.getHeader().getMac(), msg.getHeader().getSn());
         log.info(ponMsg.toString());
         ctx.writeAndFlush(ponMsg);
     }
-    
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
-        super.exceptionCaught(ctx, cause);
+        log.info("EchoServerHandler：exceptionCaught");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.info("mac: " + mac + ", 断开连接！");
+        ctx.channel().close().sync();
     }
 
 }

@@ -18,8 +18,10 @@ public class ClientRun {
         TCPClient client = new TCPClient();
         boolean connected = client.connect("127.0.0.1", 15683);
         if (connected) {
-            PingMessage msg = PingMessage.create("00BE9EC60C70", "FHTT21C60C70");
-            client.sendMsg(msg);
+            for (int i = 0; i < 100; i++) {
+                PingMessage msg = PingMessage.create("00BE9EC60C70", "FHTT21C60C70");
+                client.sendMsg(msg);
+            }
         }
 
         client.close();

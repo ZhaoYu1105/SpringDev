@@ -40,7 +40,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
  */
 public class DeviceMessageReceiveProcessor extends BasicMessageProcessor {
 
-    private Logger             log                     = LoggerFactory.getLogger(this.getClass().getName());
+    private Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
     @Override
     protected boolean canProcess(MessageContext context) throws Exception {
@@ -53,7 +53,7 @@ public class DeviceMessageReceiveProcessor extends BasicMessageProcessor {
         DeviceMessage message = DeviceEncryptProcessor.checkEncrypt((DeviceMessage) obj);// 判断是否需要加密
         final String gwid = StringUtil.toUpper(message.getDid() + "_" + message.getOsgiName());
         final String sn = StringUtil.nullOrBlank(message.getSn()) ? "EMPTY" : message.getSn();
-        
+
         log.debug("该消息的OsgiName为{}", message.getOsgiName());
         SocketChannel channel = DeviceChannelMap.get(gwid, sn);
         if (channel != null) {
@@ -68,14 +68,16 @@ public class DeviceMessageReceiveProcessor extends BasicMessageProcessor {
                 });
             } else {
                 DeviceChannelMap.remove(gwid, sn);
-                log.warn("网关[{}-{}-{}]和服务器连接已经断开，清理连接信息...网关状态:active-{}，上一次读操作时间为{}", gwid, sn, channel.remoteAddress(), channel.isActive(),getLastReadTime(channel));
+                log.warn("网关[{}-{}-{}]和服务器连接已经断开，清理连接信息...网关状态:active-{}，上一次读操作时间为{}", gwid, sn, channel.remoteAddress(), channel.isActive(),
+                        getLastReadTime(channel));
                 ChannelFuture future = channel.close();
                 log.debug("开始清理已经断开的网关[{}-{}-{}]连接...", gwid, sn, channel.remoteAddress());
                 future.addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(ChannelFuture future) throws Exception {
                         // 从redis中清理连接信息
-//                        RedisUtil.hdel(DeviceAuthResponseHandler.GATEWAY_CONNECTION_HASH + gwid, sn);
+                        // RedisUtil.hdel(DeviceAuthResponseHandler.GATEWAY_CONNECTION_HASH
+                        // + gwid, sn);
                         log.warn("清理已经断开的网关[{}-{}-{}]连接信息成功!", gwid, sn, future.channel().remoteAddress());
                     }
                 });
@@ -99,49 +101,52 @@ public class DeviceMessageReceiveProcessor extends BasicMessageProcessor {
     public void sendMessage(DeviceMessage message) {
         MessageContext context = new MessageContext();
         context.setContent(message);
-//        String type = message.getType();
-//        String cmdType = message.getMethod();
-//        IMessageProcessor jmsSender;
-//        if("response".equals(type) && !"SAVE_BUNDLE_VERSION".equals(cmdType)){
-//            jmsSender = SpringContextUtil.getBean("deviceServerJmsToBpProcessor");
-//        }else{
-//            log.debug("消息{}被放入serverReportJsmToBpProcessor队列中",cmdType);
-//            jmsSender = SpringContextUtil.getBean("serverReportJsmToBpProcessor");
-//        }
-//        try {
-//            jmsSender.process(context);
-//        } catch (Exception e) {
-//            log.error("！！！向队列deviceServerJmsToBpProcessor发送消息失败", e);
-//        }
+        // String type = message.getType();
+        // String cmdType = message.getMethod();
+        // IMessageProcessor jmsSender;
+        // if("response".equals(type) &&
+        // !"SAVE_BUNDLE_VERSION".equals(cmdType)){
+        // jmsSender =
+        // SpringContextUtil.getBean("deviceServerJmsToBpProcessor");
+        // }else{
+        // log.debug("消息{}被放入serverReportJsmToBpProcessor队列中",cmdType);
+        // jmsSender =
+        // SpringContextUtil.getBean("serverReportJsmToBpProcessor");
+        // }
+        // try {
+        // jmsSender.process(context);
+        // } catch (Exception e) {
+        // log.error("！！！向队列deviceServerJmsToBpProcessor发送消息失败", e);
+        // }
     }
-    
+
     /**
      * 获取通道上一次读操作的时间
      * 
      * @param ch
      * @return
-     * @author 徐海涛[xuhaitao@chinamobile.com] 
+     * @author 徐海涛[xuhaitao@chinamobile.com]
      * @date 2017年11月21日 - 下午6:52:28
-     * @history 
-     * 		 2017年11月21日 - 下午6:52:28 徐海涛[xuhaitao@chinamobile.com] create.
+     * @history
+     *          2017年11月21日 - 下午6:52:28 徐海涛[xuhaitao@chinamobile.com] create.
      */
     public String getLastReadTime(Channel ch) {
-        long duration = 86400000L;//设置为24小时，保证异常时能根据日期区分异常数据
+        long duration = 86400000L;// 设置为24小时，保证异常时能根据日期区分异常数据
         try {
             ChannelPipeline pipeline = ch.pipeline();
             ReadTimeoutHandler readTimeoutHandler = pipeline.get(ReadTimeoutHandler.class);
-            
+
             Field lastReadTimeField = ReadTimeoutHandler.class.getSuperclass().getDeclaredField("lastReadTime");
             lastReadTimeField.setAccessible(true);
             long lastReadTime = (long) lastReadTimeField.get(readTimeoutHandler);
             lastReadTimeField.setAccessible(false);
-            
+
             duration = TimeUnit.MILLISECONDS.convert(System.nanoTime() - lastReadTime, TimeUnit.NANOSECONDS);
-            
+
         } catch (Exception e) {
             log.error("！！！获取通道上一次读操作时间出错,{}", e);
         }
-        
+
         Date lastTime = new Date(System.currentTimeMillis() - duration);
         DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         return df.format(lastTime);

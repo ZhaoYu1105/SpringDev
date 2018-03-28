@@ -16,8 +16,8 @@ import org.hibernate.validator.constraints.NotBlank;
  * 
  * @author 徐海涛[xuhaitao@chinamobile.com]
  * @date 2017年7月15日 - 下午4:31:32
- * @history 
- * 		 2017年7月15日 - 下午4:31:32 徐海涛[xuhaitao@chinamobile.com] create.
+ * @history
+ *          2017年7月15日 - 下午4:31:32 徐海涛[xuhaitao@chinamobile.com] create.
  */
 public class DeviceNicknameSetBo {
 
@@ -30,12 +30,15 @@ public class DeviceNicknameSetBo {
     public String getNickname() {
         return nickname;
     }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
     public String getDeviceMac() {
         return deviceMac;
     }
+
     public void setDeviceMac(String deviceMac) {
         this.deviceMac = deviceMac;
     }

@@ -76,7 +76,6 @@ public class DeviceChannelDiscardProcessor extends BasicMessageProcessor {
         } else {
             // log.debug("网关[{}]和device server服务器的连接SocketChannel不在本节点[{}]上...",
             // gwid, DeviceServerListener.serverInstanceName);
-            // TODO 推送错误消息给APP
         }
     }
 

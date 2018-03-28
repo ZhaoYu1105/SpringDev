@@ -19,8 +19,9 @@ public class DeviceUDPHeartMap {
     // LoggerFactory.getLogger(DeviceUDPHeartMap.class);
 
     // private static SortedMap<String, String> map = new TreeMap<>();
-    
-    // public static ConcurrentHashMap<String, Long> conMap = new ConcurrentHashMap<>();
+
+    // public static ConcurrentHashMap<String, Long> conMap = new
+    // ConcurrentHashMap<>();
     public static Map<String, ConcurrentHashMap<String, Long>> conMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, Long>>();
 
     /**
@@ -55,10 +56,10 @@ public class DeviceUDPHeartMap {
      * 
      * @param key
      * @param sn
-     * @author 蔡洁[caijie@chinamobile.com] 
+     * @author 蔡洁[caijie@chinamobile.com]
      * @date 2017年10月24日 - 上午9:50:20
-     * @history 
-     * 		 2017年10月24日 - 上午9:50:20 蔡洁[caijie@chinamobile.com] create.
+     * @history
+     *          2017年10月24日 - 上午9:50:20 蔡洁[caijie@chinamobile.com] create.
      */
     public static void remove(String key, String sn) {
         if (StringUtil.nullOrBlank(sn)) {

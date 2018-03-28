@@ -32,7 +32,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class DeviceMessageHandler extends SimpleChannelInboundHandler<DeviceBaseMessage> {
 
     private Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    
 
     /*
      * (non-Javadoc)
@@ -44,48 +43,50 @@ public class DeviceMessageHandler extends SimpleChannelInboundHandler<DeviceBase
     protected void channelRead0(ChannelHandlerContext ctx, DeviceBaseMessage msg) throws Exception {
         if (msg instanceof DeviceMessage) {
             DeviceMessage message = (DeviceMessage) msg;
-            
-            if(message instanceof DeviceReportMessage){
+
+            if (message instanceof DeviceReportMessage) {
                 DeviceReportMessage report = (DeviceReportMessage) message;
                 /**
                  * 对上线提醒和下线提醒消息做过滤处理
                  */
                 String msgType = message.getMethod();
                 boolean result = true;
-                if("REPORT_LAN_DEVICE_ONLINE".equals(msgType)){
+                if ("REPORT_LAN_DEVICE_ONLINE".equals(msgType)) {
                     result = OnoffMessageProcessor.onlineMsgFilter(report);
-                }else if ("reportOffline".equals(msgType)) {
+                } else if ("reportOffline".equals(msgType)) {
                     result = OnoffMessageProcessor.offlineMsgFilter(report);
                 }
-                if(!result){
+
+                if (!result) {
                     log.debug("过滤过于频繁的设备上/下线消息{}", report.toString());
                     return;
                 }
             }
-            
+
             log.debug("调用加解密方法！！！");
             message = DeviceEncryptProcessor.checkEncrypt(message);// 判断是否需要解密
             MessageContext context = new MessageContext();
             context.setContent(message);
-            
-//            String type = message.getType();
-//            String cmdType = message.getMethod();
-//            IMessageProcessor jmsSender;
-//            if("response".equals(type)){
-//                jmsSender = SpringContextUtil.getBean("deviceServerJmsToBpProcessor");
-//            }else{
-//                log.debug("消息{}被放入serverReportJsmToBpProcessor队列中",cmdType);
-//                jmsSender = SpringContextUtil.getBean("serverReportJsmToBpProcessor");
-//            }
-//            if("GET_LAN_NET_INFO".equals(cmdType)){
-//                context.setPriority(9);//提高获取下挂设备列表方法的优先级
-//            }
-//            try {
-//                jmsSender.process(context);
-//            } catch (Exception e) {
-//                log.error("！！！", e);
-//            }
 
+            // String type = message.getType();
+            // String cmdType = message.getMethod();
+            // IMessageProcessor jmsSender;
+            // if("response".equals(type)){
+            // jmsSender =
+            // SpringContextUtil.getBean("deviceServerJmsToBpProcessor");
+            // }else{
+            // log.debug("消息{}被放入serverReportJsmToBpProcessor队列中",cmdType);
+            // jmsSender =
+            // SpringContextUtil.getBean("serverReportJsmToBpProcessor");
+            // }
+            // if("GET_LAN_NET_INFO".equals(cmdType)){
+            // context.setPriority(9);//提高获取下挂设备列表方法的优先级
+            // }
+            // try {
+            // jmsSender.process(context);
+            // } catch (Exception e) {
+            // log.error("！！！", e);
+            // }
         } else {
             log.warn("！丢弃未知类型数据包: {}", msg.toString());
             // ctx.fireChannelRead(msg);

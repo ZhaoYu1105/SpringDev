@@ -49,15 +49,16 @@ public class DeviceHeartBeatRequestHandler extends ChannelInboundHandlerAdapter 
                     DevicePingMessage ping = DevicePingMessage.newPluginPingMessage(gwid, sn);
                     log.debug("网关[{}-{}]发送心跳ping到服务端[{}]...", gwid, sn, ctx.channel().remoteAddress());
                     ctx.writeAndFlush(ping);
-                    
-//                    DeviceResponseMessage response = new DeviceResponseMessage();
-//                    response.setDid("ABC12345");
-//                    response.setPluginName("LanDeviceConfig");
-//                    response.setMethod("GET_LAN_NET_INFO");
-//                    response.setUserId("5757989027845");
-//                    ctx.writeAndFlush(response);
-//                    log.debug("网关{}的消息{}已发送至服务端",gwid ,response.getMethod());
-                    
+
+                    // DeviceResponseMessage response = new
+                    // DeviceResponseMessage();
+                    // response.setDid("ABC12345");
+                    // response.setPluginName("LanDeviceConfig");
+                    // response.setMethod("GET_LAN_NET_INFO");
+                    // response.setUserId("5757989027845");
+                    // ctx.writeAndFlush(response);
+                    // log.debug("网关{}的消息{}已发送至服务端",gwid ,response.getMethod());
+
                     break;
                 default:
                     break;

@@ -21,7 +21,7 @@ public class MedalGatewayBo {
     private String medalType;
     private String isOwn;    // 0未获得,1获得
     private Object param;
-    
+
     public Object getParam() {
         return param;
     }

@@ -18,7 +18,6 @@ public class BindRelativeBo implements Serializable {
     private String            sn;
     private int               flag;
     private Date              bindOrShareTime;
-    
 
     public String getPhone() {
         return phone;

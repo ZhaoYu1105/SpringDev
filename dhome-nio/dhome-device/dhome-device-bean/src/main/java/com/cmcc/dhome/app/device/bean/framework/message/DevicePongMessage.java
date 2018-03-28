@@ -24,9 +24,9 @@ public class DevicePongMessage extends DeviceBaseMessage {
      * 
      */
     private static final long serialVersionUID = -1810145854146698838L;
-    
+
     @JSONField(name = "Parameter")
-    private String param = "60";//心跳间隔时间，默认60秒
+    private String            param            = "60";                 // 心跳间隔时间，默认60秒
 
     public DevicePongMessage() {
         super();

@@ -28,9 +28,9 @@ public class DeviceServerRun {
     @SuppressWarnings("resource")
     public static void main(String[] args) throws Exception {
 
-        //添加程序结束监听  
-        Runtime.getRuntime().addShutdownHook(new ShutDownWork());  
-        
+        // 添加程序结束监听
+        Runtime.getRuntime().addShutdownHook(new ShutDownWork());
+
         String osType = System.getProperty("os.name").toLowerCase();
         /*
          * /opt/device-run
@@ -56,7 +56,7 @@ public class DeviceServerRun {
 
         ApplicationContext context = new FileSystemXmlApplicationContext("file:" + springConfFile);
         final DeviceServerListener tcpListener = context.getBean(DeviceServerListener.class);
-        
+
         new Thread() {
             public void run() {
                 log.debug("！！！tcpListener开始启动");

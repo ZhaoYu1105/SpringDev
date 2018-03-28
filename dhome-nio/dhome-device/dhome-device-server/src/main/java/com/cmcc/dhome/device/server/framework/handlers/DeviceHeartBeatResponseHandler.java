@@ -42,15 +42,16 @@ public class DeviceHeartBeatResponseHandler extends SimpleChannelInboundHandler<
     protected void channelRead0(ChannelHandlerContext ctx, DeviceBaseMessage msg) throws Exception {
         if (msg instanceof DevicePingMessage) {
             String did = msg.getDid();
-            if(did != null){
+            if (did != null) {
                 String sn = msg.getSn();
                 final String gwid = StringUtil.toUpper(did + "_" + msg.getOsgiName());
                 SocketChannel channelActive = DeviceChannelMap.get(gwid, sn);
-                if(channelActive != null){
+                if (channelActive != null) {
                     // 客户端心跳ping, 返回心跳ping
                     log.debug("收到网关[{}-{}-{}]心跳包(ping)，并发送响应心跳包(pong)...目前连接数：{}", did, sn, ctx.channel().remoteAddress(), DeviceChannelMap.size());
-                    ctx.writeAndFlush(DevicePongMessage.newPluginPongMessage(did, msg.getOsgiName(), sn, "60"));
-                }else{
+                    DevicePongMessage pongMsg = DevicePongMessage.newPluginPongMessage(did, msg.getOsgiName(), sn, "60");
+                    ctx.writeAndFlush(pongMsg);
+                } else {
                     log.warn("网关{}-{}未登录，发送心跳，不合法！", did);
                     return;
                 }

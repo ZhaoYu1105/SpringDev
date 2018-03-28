@@ -33,7 +33,7 @@ public class EchoClientHandler extends ChannelDuplexHandler {
                 AttributeKey<String> attributeKey = AttributeKey.valueOf("gwid");
                 Attribute<String> attribute = ctx.channel().attr(attributeKey);
                 String gwid = attribute.get();
-                log.info("{}的TCP通道长时间未使用即将关闭",gwid);
+                log.info("{}的TCP通道长时间未使用即将关闭", gwid);
                 if (gwid != null) {
                     String did = gwid.split("_")[0];
                     String sn = gwid.split("_")[2];

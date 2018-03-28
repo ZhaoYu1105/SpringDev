@@ -36,16 +36,14 @@ public class DeviceChannelMap {
      * 缓存网关MAC地址，及其对应的长连接对象
      */
     private static Map<String, ConcurrentHashMap<String, SocketChannel>> channelMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, SocketChannel>>();
-    
-    public static LoadingCache<Long, AtomicLong> counter =
-            CacheBuilder.newBuilder()
-                    .expireAfterWrite(2, TimeUnit.SECONDS)
-                    .build(new CacheLoader<Long, AtomicLong>() {
-                        @Override
-                        public AtomicLong load(Long seconds) throws Exception {
-                            return new AtomicLong(0);
-                        }
-                    });
+
+    public static LoadingCache<Long, AtomicLong>                         counter    = CacheBuilder.newBuilder().expireAfterWrite(2, TimeUnit.SECONDS)
+            .build(new CacheLoader<Long, AtomicLong>() {
+                                                                                                @Override
+                                                                                                public AtomicLong load(Long seconds) throws Exception {
+                                                                                                    return new AtomicLong(0);
+                                                                                                }
+                                                                                            });
 
     /**
      * 添加网关MAC地址及其长连接对象至缓存中
@@ -70,8 +68,8 @@ public class DeviceChannelMap {
             existChannel = new ConcurrentHashMap<String, SocketChannel>();
         }
         existChannel.put(sn, socketChannel);
-        if(!"EMPTY".equals(sn)){
-            //清除网关升级等异常情况残留的旧连接
+        if (!"EMPTY".equals(sn)) {
+            // 清除网关升级等异常情况残留的旧连接
             existChannel.remove("EMPTY");
         }
         channelMap.put(did, existChannel);
@@ -146,17 +144,17 @@ public class DeviceChannelMap {
     public static int size() {
         return channelMap.size();
     }
-    
+
     /**
      * 获取channelMap的所有key值
      * 
      * @return
-     * @author 徐海涛[xuhaitao@chinamobile.com] 
+     * @author 徐海涛[xuhaitao@chinamobile.com]
      * @date 2017年10月19日 - 下午6:33:43
-     * @history 
-     * 		 2017年10月19日 - 下午6:33:43 徐海涛[xuhaitao@chinamobile.com] create.
+     * @history
+     *          2017年10月19日 - 下午6:33:43 徐海涛[xuhaitao@chinamobile.com] create.
      */
-    public static Set<String> getKeys(){
-         return channelMap.keySet();
+    public static Set<String> getKeys() {
+        return channelMap.keySet();
     }
 }

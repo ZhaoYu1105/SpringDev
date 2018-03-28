@@ -35,10 +35,10 @@ public class DeviceUDPChannelMap {
      * 
      * @param did
      * @param obj
-     * @author 徐海涛[xuhaitao@chinamobile.com] 
+     * @author 徐海涛[xuhaitao@chinamobile.com]
      * @date 2017年9月6日 - 下午6:31:26
-     * @history 
-     * 		 2017年9月6日 - 下午6:31:26 徐海涛[xuhaitao@chinamobile.com] create.
+     * @history
+     *          2017年9月6日 - 下午6:31:26 徐海涛[xuhaitao@chinamobile.com] create.
      */
     public static void add(String did, String sn, UDPObject obj) {
         if (StringUtil.nullOrBlank(sn)) {
@@ -57,14 +57,14 @@ public class DeviceUDPChannelMap {
      * 
      * @param did
      * @return
-     * @author 徐海涛[xuhaitao@chinamobile.com] 
+     * @author 徐海涛[xuhaitao@chinamobile.com]
      * @date 2017年9月6日 - 下午6:31:49
-     * @history 
-     * 		 2017年9月6日 - 下午6:31:49 徐海涛[xuhaitao@chinamobile.com] create.
+     * @history
+     *          2017年9月6日 - 下午6:31:49 徐海涛[xuhaitao@chinamobile.com] create.
      */
     public static UDPObject getChannel(String did, String sn) {
         if (StringUtil.notNullAndBlank(did)) {
-            
+
             ConcurrentHashMap<String, UDPObject> existUdpObj = channelMap.get(did);
             if (null != existUdpObj) {
                 if (StringUtil.nullOrBlank(sn) || "EMPTY".equals(sn)) {
@@ -84,10 +84,10 @@ public class DeviceUDPChannelMap {
      * 
      * @param did
      * @return
-     * @author 徐海涛[xuhaitao@chinamobile.com] 
+     * @author 徐海涛[xuhaitao@chinamobile.com]
      * @date 2017年9月6日 - 下午6:32:17
-     * @history 
-     * 		 2017年9月6日 - 下午6:32:17 徐海涛[xuhaitao@chinamobile.com] create.
+     * @history
+     *          2017年9月6日 - 下午6:32:17 徐海涛[xuhaitao@chinamobile.com] create.
      */
     public static UDPObject remove(String did, String sn) {
         if (StringUtil.nullOrBlank(sn)) {

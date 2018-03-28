@@ -46,11 +46,11 @@ public class GuestWifiSetBo {
     @Pattern(regexp = "[0-1]", message = "hidden只能设置为0或1")
     private String hidden;
     @NotNull(message = "缺少参数hiddenTime")
-    @Range(min=0,max=86400,message="hiddenTime超出取值范围")
-    private int hiddenTime;
+    @Range(min = 0, max = 86400, message = "hiddenTime超出取值范围")
+    private int    hiddenTime;
     @NotNull(message = "缺少参数closeTime")
-    @Range(min=0,max=86400,message="closeTime超出取值范围")
-    private int closeTime;
+    @Range(min = 0, max = 86400, message = "closeTime超出取值范围")
+    private int    closeTime;
 
     public String getUserId() {
         return userId;

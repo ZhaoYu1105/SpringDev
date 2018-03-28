@@ -21,7 +21,6 @@ import com.cmcc.dhome.app.device.bean.framework.message.DeviceMessage;
 import com.cmcc.dhome.app.device.bean.framework.message.DeviceRequestMessage;
 import com.cmcc.dhome.app.device.bean.framework.message.DeviceResponseMessage;
 import com.cmcc.dhome.device.server.framework.DeviceServerListener;
-import com.cmcc.dhome.device.server.framework.util.RedisHttpService;
 import com.cmcc.zeus.base.processor.MessageContext;
 import com.cmcc.zeus.base.utils.StringUtil;
 
@@ -44,9 +43,9 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
     private String             gwid                    = null;
     private String             sn                      = null;
     private String             serverInstanceName      = "";
-    
-    private RedisHttpService redisHttpService;
-    
+
+    // private RedisHttpService redisHttpService;
+
     /**
      * 保存：网关mac, 服务器实例名称
      */
@@ -72,7 +71,8 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
         super();
         this.timeoutSeconds = timeoutSeconds;
         this.serverInstanceName = serverInstanceName;
-//        redisHttpService = SpringContextUtil.getBean("redisService");
+        log.info(this.serverInstanceName);
+        // redisHttpService = SpringContextUtil.getBean("redisService");
     }
 
     /*
@@ -83,7 +83,7 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DeviceBaseMessage msg) throws Exception {
-        
+
         String did = msg.getDid();
         if (!DeviceServerListener.authStatus) {
             log.warn("服务即将关闭，不再接受网关{}的登录请求", did);
@@ -98,13 +98,13 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
         // request
         if (msg instanceof DeviceRequestMessage && "authPlugin".equals(((DeviceRequestMessage) msg).getPluginName())) {
 
-            //得到当前秒
+            // 得到当前秒
             long currentSeconds = System.currentTimeMillis() / 1000;
-            if(DeviceChannelMap.counter.get(currentSeconds).incrementAndGet() > DeviceServerListener.loginMax) {
+            if (DeviceChannelMap.counter.get(currentSeconds).incrementAndGet() > DeviceServerListener.loginMax) {
                 log.warn("！！！超出流量限制，舍弃该消息");
-                return ;
+                return;
             }
-            
+
             gwid = StringUtil.toUpper(did) + "_" + msg.getOsgiName().toUpperCase();
             sn = StringUtil.nullOrBlank(msg.getSn()) ? "EMPTY" : msg.getSn();
 
@@ -134,25 +134,11 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
             DeviceChannelMap.add(gwid, sn, (SocketChannel) ctx.channel());
             // try (Jedis jedis = RedisUtil.getJedis()) {
             // 将该网关连接信息放到redis中，并记下该网关连接所在服务器实例名称
-//            RedisUtil.hset(GATEWAY_CONNECTION_HASH + gwid, sn, serverInstanceName);
-//            redisHttpService.hsetHttp(GATEWAY_CONNECTION_HASH + gwid, sn, serverInstanceName);
+            // RedisUtil.hset(GATEWAY_CONNECTION_HASH + gwid, sn,
+            // serverInstanceName);
+            // redisHttpService.hsetHttp(GATEWAY_CONNECTION_HASH + gwid, sn,
+            // serverInstanceName);
 
-            String osgi = request.getOsgiName();
-            if ("EXTEND01".equalsIgnoreCase(osgi)) {
-                // param参数存在的情况下才进行处理
-                if (bundleVersion != null) {
-                    DeviceResponseMessage bundleMsg = new DeviceResponseMessage();
-                    bundleMsg.setDid(request.getDid());
-                    bundleMsg.setSn(request.getSn());
-                    bundleMsg.setPluginName("HgSystem");
-                    bundleMsg.setMethod("SAVE_BUNDLE_VERSION");
-                    bundleMsg.setOsgiName(osgi);
-                    JSONObject json = new JSONObject();
-                    json.put("bundleVersion", bundleVersion);
-                    bundleMsg.setData(json);
-                    sendMessage(bundleMsg);
-                }
-            }
         } else {
             // response or report
             ctx.fireChannelRead(msg);
@@ -162,16 +148,17 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         // log.debug("gwid值为：{}的连接将断开！", gwid);
-//        if (gwid != null) {
-//            DeviceChannelMap.remove(gwid, sn);
-//            String value = RedisUtil.hget(GATEWAY_CONNECTION_HASH + gwid, sn);
-//            if (serverInstanceName.equals(value)) {
-//                // redis中存储地址与本机相同时才能进行删除操作
-//                RedisUtil.hdel(GATEWAY_CONNECTION_HASH + gwid, sn);
-//                redisHttpService.hdelHttp(GATEWAY_CONNECTION_HASH + gwid, sn);
-//            }
-//            log.warn("网关[{}-{}-{}]退出登录！并从redis中清除连接信息。当前服务器节点连接数: {}", gwid, sn, ctx.channel().remoteAddress(), DeviceChannelMap.size());
-//        }
+        // if (gwid != null) {
+        // DeviceChannelMap.remove(gwid, sn);
+        // String value = RedisUtil.hget(GATEWAY_CONNECTION_HASH + gwid, sn);
+        // if (serverInstanceName.equals(value)) {
+        // // redis中存储地址与本机相同时才能进行删除操作
+        // RedisUtil.hdel(GATEWAY_CONNECTION_HASH + gwid, sn);
+        // redisHttpService.hdelHttp(GATEWAY_CONNECTION_HASH + gwid, sn);
+        // }
+        // log.warn("网关[{}-{}-{}]退出登录！并从redis中清除连接信息。当前服务器节点连接数: {}", gwid, sn,
+        // ctx.channel().remoteAddress(), DeviceChannelMap.size());
+        // }
     }
 
     @Override
@@ -205,13 +192,15 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
     public void sendMessage(DeviceMessage message) {
         MessageContext context = new MessageContext();
         context.setContent(message);
-//        IMessageProcessor jmsSender = SpringContextUtil.getBean("serverReportJsmToBpProcessor");
-//        try {
-//            log.debug("网关{}-{}的消息SAVE_BUNDLE_VERSION被放入serverReportJsmToBpProcessor队列中", message.getDid(), message.getSn());
-//            jmsSender.process(context);
-//        } catch (Exception e) {
-//            log.error("！！！向队列serverReportJsmToBpProcessor发送消息失败", e);
-//        }
+        // IMessageProcessor jmsSender =
+        // SpringContextUtil.getBean("serverReportJsmToBpProcessor");
+        // try {
+        // log.debug("网关{}-{}的消息SAVE_BUNDLE_VERSION被放入serverReportJsmToBpProcessor队列中",
+        // message.getDid(), message.getSn());
+        // jmsSender.process(context);
+        // } catch (Exception e) {
+        // log.error("！！！向队列serverReportJsmToBpProcessor发送消息失败", e);
+        // }
     }
 
 }

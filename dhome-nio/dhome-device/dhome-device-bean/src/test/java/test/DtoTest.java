@@ -19,8 +19,8 @@ import org.junit.Test;
  * 
  * @author 徐海涛[xuhaitao@chinamobile.com]
  * @date 2017年4月27日 - 下午6:56:11
- * @history 
- * 		 2017年4月27日 - 下午6:56:11 徐海涛[xuhaitao@chinamobile.com] create.
+ * @history
+ *          2017年4月27日 - 下午6:56:11 徐海涛[xuhaitao@chinamobile.com] create.
  */
 public class DtoTest {
 

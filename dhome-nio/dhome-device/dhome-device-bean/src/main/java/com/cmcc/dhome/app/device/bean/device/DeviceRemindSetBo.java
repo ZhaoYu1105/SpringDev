@@ -84,5 +84,4 @@ public class DeviceRemindSetBo {
         this.mac = mac;
     }
 
-
 }

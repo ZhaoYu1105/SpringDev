@@ -21,8 +21,8 @@ import org.apache.zookeeper.ZooKeeper;
  * 
  * @author liujianliang@chinamobile.com
  * @date 2016年6月28日 - 下午7:04:38
- * @history 
- * 		 2016年6月28日 - 下午7:04:38 liujianliang@chinamobile.com create.
+ * @history
+ *          2016年6月28日 - 下午7:04:38 liujianliang@chinamobile.com create.
  */
 public class ZkDemo {
 
@@ -40,15 +40,17 @@ public class ZkDemo {
         // 获取指定 path 下的所有子目录节点，同样 getChildren方法也有一个重载方法可以设置特定的 watcher 监控子节点的状态
         System.out.println("ls / => " + zk.getChildren("/", true));
 
-        // 判断某个 path 是否存在，并设置是否监控这个目录节点，这里的 watcher 是在创建 ZooKeeper 实例时指定的 watcher；
+        // 判断某个 path 是否存在，并设置是否监控这个目录节点，这里的 watcher 是在创建 ZooKeeper 实例时指定的
+        // watcher；
         // exists方法还有一个重载方法，可以指定特定的 watcher
         if (zk.exists("/node", true) == null) {
             // 创建一个给定的目录节点 path, 并给它设置数据；
             // CreateMode 标识有四种形式的目录节点，分别是：
-            //     PERSISTENT：持久化目录节点，这个目录节点存储的数据不会丢失；
-            //     PERSISTENT_SEQUENTIAL：顺序自动编号的目录节点，这种目录节点会根据当前已近存在的节点数自动加 1，然后返回给客户端已经成功创建的目录节点名；
-            //     EPHEMERAL：临时目录节点，一旦创建这个节点的客户端与服务器端口也就是 session 超时，这种节点会被自动删除；
-            //     EPHEMERAL_SEQUENTIAL：临时自动编号节点
+            // PERSISTENT：持久化目录节点，这个目录节点存储的数据不会丢失；
+            // PERSISTENT_SEQUENTIAL：顺序自动编号的目录节点，这种目录节点会根据当前已近存在的节点数自动加
+            // 1，然后返回给客户端已经成功创建的目录节点名；
+            // EPHEMERAL：临时目录节点，一旦创建这个节点的客户端与服务器端口也就是 session 超时，这种节点会被自动删除；
+            // EPHEMERAL_SEQUENTIAL：临时自动编号节点
             zk.create("/node", "conan".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             System.out.println("create /node conan");
             // 查看/node节点数据
@@ -70,7 +72,8 @@ public class ZkDemo {
             // 给 path 设置数据，可以指定这个数据的版本号，如果 version 为 -1 怎可以匹配任何版本
             zk.setData("/node", "changed".getBytes(), -1);
             // 查看/node节点数据
-            // 获取这个 path 对应的目录节点存储的数据，数据的版本等信息可以通过 stat 来指定，同时还可以设置是否监控这个目录节点数据的状态
+            // 获取这个 path 对应的目录节点存储的数据，数据的版本等信息可以通过 stat
+            // 来指定，同时还可以设置是否监控这个目录节点数据的状态
             System.out.println("get /node => " + new String(zk.getData("/node", false, null)));
         }
 

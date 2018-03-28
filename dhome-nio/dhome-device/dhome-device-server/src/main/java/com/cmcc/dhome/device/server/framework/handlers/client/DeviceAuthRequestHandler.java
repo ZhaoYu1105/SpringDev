@@ -30,7 +30,7 @@ public class DeviceAuthRequestHandler extends SimpleChannelInboundHandler<Device
 
     private Logger log  = LoggerFactory.getLogger(this.getClass().getName());
     private String gwid = null;
-    private String sn = null;
+    private String sn   = null;
 
     /**
      * @param mac

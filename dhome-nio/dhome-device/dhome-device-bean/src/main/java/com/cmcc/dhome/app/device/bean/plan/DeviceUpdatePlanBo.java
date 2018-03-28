@@ -10,8 +10,8 @@ import org.hibernate.validator.constraints.Range;
  * 
  * @author 蔡洁[caijie@chinamobile.com]
  * @date 2017年3月10日 - 上午9:41:23
- * @history 
- * 		 2017年3月10日 - 上午9:41:23 蔡洁[caijie@chinamobile.com] create.
+ * @history
+ *          2017年3月10日 - 上午9:41:23 蔡洁[caijie@chinamobile.com] create.
  */
 public class DeviceUpdatePlanBo {
     @NotNull(message = "缺少参数reqType")

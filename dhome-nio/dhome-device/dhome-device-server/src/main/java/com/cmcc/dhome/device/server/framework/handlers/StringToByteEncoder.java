@@ -26,8 +26,6 @@ import io.netty.util.CharsetUtil;
  */
 public class StringToByteEncoder extends MessageToMessageEncoder<String> {
 
-    // private Logger log = LoggerFactory.getLogger(this.getClass().getName());
-
     /**
      * 将字符串消息（JSON格式）转成字节数组
      */

@@ -1,11 +1,6 @@
 package com.cmcc.dhome.device.server.run;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Random;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.cmcc.dhome.device.server.framework.handlers.DeviceMessageDecoder;
 import com.cmcc.dhome.device.server.framework.handlers.DeviceMessageEncoder;
@@ -13,7 +8,6 @@ import com.cmcc.dhome.device.server.framework.handlers.StringToByteEncoder;
 import com.cmcc.dhome.device.server.framework.handlers.client.DeviceAuthRequestHandler;
 import com.cmcc.dhome.device.server.framework.handlers.client.DeviceHeartBeatRequestHandler;
 import com.cmcc.dhome.device.server.framework.handlers.client.DeviceOutboundMessageHandler;
-import com.cmcc.zeus.base.core.logback.LogBackConfigLoader;
 import com.cmcc.zeus.base.net.tcp.TcpClientListener;
 import com.cmcc.zeus.base.utils.StringUtil;
 
@@ -40,34 +34,15 @@ import io.netty.util.CharsetUtil;
  */
 public class DeviceClientRun extends TcpClientListener implements Runnable {
 
-    private static Logger log  = LoggerFactory.getLogger(DeviceClientRun.class);
-
-    String                host = "172.18.38.56";
-    int                   port = 15683;
+    String host = "172.18.38.56";
+    int    port = 15683;
 
     public static void main(String[] args) throws IOException, JoranException {
-
-        String osType = System.getProperty("os.name").toLowerCase();
-        /*
-         * /opt/device-run
-         */
-        String homePath = System.getProperty("smart.home");
-        /*
-         * /opt/device-run/conf/
-         */
-        String confPath = homePath + File.separator + "conf" + File.separator;
-
-        // String logbackConfFile = confPath + "logback.xml";
-        // LogBackConfigLoader.load(logbackConfFile);
-
-        log.info(String.format("Operating Systerm: %s", osType));
-        log.info(String.format("Smart Home Dir: %s", homePath));
-
         int total = 10000;
         for (int i = 0; i < total; i++) {
             DeviceClientRun client = new DeviceClientRun();
             client.setServerName("Device");
-            client.setTimeoutSeconds(60);
+            client.setTimeoutSeconds(10);
 
             new Thread(client).start();
         }
@@ -75,7 +50,6 @@ public class DeviceClientRun extends TcpClientListener implements Runnable {
 
     @Override
     protected void initConnection(String host, int port) throws InterruptedException {
-
         Bootstrap bootstrap = new Bootstrap();
         bossGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
 

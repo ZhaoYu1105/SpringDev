@@ -69,7 +69,7 @@ public class DeviceEncryptProcessor {
                     }
                 }
                 log.debug("wifi数据解密完成，{}", message.toString());
-            } else if(("getInfo".equals(cmdType) || "setSwitch".equals(cmdType)) && "guestWifi".equals(plugin)){
+            } else if (("getInfo".equals(cmdType) || "setSwitch".equals(cmdType)) && "guestWifi".equals(plugin)) {
                 if (data != null) {
                     JSONObject jsonObj = JSONObject.parseObject(data.toString());
                     String pwd = jsonObj.getString("pwd");
@@ -99,7 +99,7 @@ public class DeviceEncryptProcessor {
                 }
                 ((DeviceRequestMessage) message).setParam(jsonObj);
                 log.debug("wifi数据加密完成，{}", message.toString());
-            }else if("setWifi".equals(cmdType) && "guestWifi".equals(plugin)){
+            } else if ("setWifi".equals(cmdType) && "guestWifi".equals(plugin)) {
                 if (param != null) {
                     jsonObj = (JSONObject) param;
                     String pwd = jsonObj.getString("pwd");
@@ -113,7 +113,7 @@ public class DeviceEncryptProcessor {
                 ((DeviceRequestMessage) message).setParam(jsonObj);
                 log.debug("wifi数据加密完成，{}", message.toString());
             }
-        } 
+        }
         return message;
     }
 }

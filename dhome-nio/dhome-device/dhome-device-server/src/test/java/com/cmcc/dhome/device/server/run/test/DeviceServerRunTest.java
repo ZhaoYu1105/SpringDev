@@ -16,7 +16,7 @@ import com.cmcc.zeus.base.core.logback.LogBackConfigLoader;
 
 import ch.qos.logback.core.joran.spi.JoranException;
 
-/** 
+/**
  * 设备接入服务器启动程序
  * 
  * @author liujianliang@chinamobile.com
@@ -31,18 +31,18 @@ public class DeviceServerRunTest {
 
     public static void main(String[] args) throws Exception {
 
-        //添加程序结束监听  
-        Runtime.getRuntime().addShutdownHook(new ShutDownWork());  
-        
+        // 添加程序结束监听
+        Runtime.getRuntime().addShutdownHook(new ShutDownWork());
+
         ApplicationContext context = initApplicationContext();
 
         final DeviceServerListener tcpListener = context.getBean(DeviceServerListener.class);
-//        }.start();
-//        new Thread() {
-//            public void run() {
-                tcpListener.startListener();
-//            }
-//        }.start();
+        // }.start();
+        // new Thread() {
+        // public void run() {
+        tcpListener.startListener();
+        // }
+        // }.start();
     }
 
     /**

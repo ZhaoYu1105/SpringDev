@@ -4,10 +4,12 @@ import java.util.Date;
 
 /**
  * 速率统计bo
+ * 
  * @author majinjin[majinjin@cmhi.chinamobile.com]
  * @date 2017年3月19日 - 下午1:59:03
- * @history 
- * 		 2017年3月19日 - 下午1:59:03 majinjin[majinjin@cmhi.chinamobile.com] create.
+ * @history
+ *          2017年3月19日 - 下午1:59:03 majinjin[majinjin@cmhi.chinamobile.com]
+ *          create.
  */
 public class MaxSpeedBo {
 

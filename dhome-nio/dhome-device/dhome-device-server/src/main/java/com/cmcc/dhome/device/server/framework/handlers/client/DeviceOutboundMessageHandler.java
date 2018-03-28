@@ -33,13 +33,14 @@ public class DeviceOutboundMessageHandler extends SimpleChannelInboundHandler<De
     protected void channelRead0(ChannelHandlerContext ctx, DeviceMessage msg) throws Exception {
         log.info("！！！开始对消息进行回复处理：{}", msg);
         if (msg instanceof DeviceRequestMessage) {
-//            String pluginName = msg.getPluginName();
-//            String cmdType = msg.getMethod();
+            // String pluginName = msg.getPluginName();
+            // String cmdType = msg.getMethod();
             DeviceResponseMessage resMsg = null;
-//            if ("WifiConfig".equals(pluginName) && "SET_WIFI_SSID_INFO".equals(cmdType)) {
-//                resMsg = ((DeviceRequestMessage) msg).toResponseMessage();
-//                resMsg.setResult("1000000");
-//            }
+            // if ("WifiConfig".equals(pluginName) &&
+            // "SET_WIFI_SSID_INFO".equals(cmdType)) {
+            // resMsg = ((DeviceRequestMessage) msg).toResponseMessage();
+            // resMsg.setResult("1000000");
+            // }
             resMsg = ((DeviceRequestMessage) msg).toResponseMessage();
             resMsg.setResult("1000000");
             ctx.writeAndFlush(resMsg);

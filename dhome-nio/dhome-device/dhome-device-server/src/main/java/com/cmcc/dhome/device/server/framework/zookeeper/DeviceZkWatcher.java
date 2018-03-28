@@ -128,21 +128,26 @@ public class DeviceZkWatcher implements Watcher {
             /*
              * 子节点删除事件，说明有其它子节点挂掉了
              */
-//            String diedNodePath = event.getPath();
-//            String diedNode = diedNodePath.substring(diedNodePath.lastIndexOf("/") + 1, diedNodePath.length());
+            // String diedNodePath = event.getPath();
+            // String diedNode =
+            // diedNodePath.substring(diedNodePath.lastIndexOf("/") + 1,
+            // diedNodePath.length());
             // log.warn("服务器节点{}已经停止服务，请联系管理员处理！", diedNode);
-//            /*
-//             * 服务器节点停止后，自动从zookeeper中删除，然后要从redis缓存中清除保存在该节点中的所有连接信息
-//             */
-//            Map<String, String> all = RedisUtil.hgetAll(DeviceAuthResponseHandler.GATEWAY_CONNECTION_HASH);
-//            int num = 0;
-//            for (Map.Entry<String, String> entry : all.entrySet()) {
-//                if (entry.getValue().equals(diedNode)) {
-//                    num++;
-//                    RedisUtil.hdel(DeviceAuthResponseHandler.GATEWAY_CONNECTION_HASH, entry.getKey());
-//                }
-//            }
-//            log.warn("节点服务器[{}]宕机，从redis缓存中删除节点服务器[{}]上的连接信息，共[{}]条", diedNode, diedNode, num);
+            // /*
+            // * 服务器节点停止后，自动从zookeeper中删除，然后要从redis缓存中清除保存在该节点中的所有连接信息
+            // */
+            // Map<String, String> all =
+            // RedisUtil.hgetAll(DeviceAuthResponseHandler.GATEWAY_CONNECTION_HASH);
+            // int num = 0;
+            // for (Map.Entry<String, String> entry : all.entrySet()) {
+            // if (entry.getValue().equals(diedNode)) {
+            // num++;
+            // RedisUtil.hdel(DeviceAuthResponseHandler.GATEWAY_CONNECTION_HASH,
+            // entry.getKey());
+            // }
+            // }
+            // log.warn("节点服务器[{}]宕机，从redis缓存中删除节点服务器[{}]上的连接信息，共[{}]条",
+            // diedNode, diedNode, num);
             // }
         }
     }

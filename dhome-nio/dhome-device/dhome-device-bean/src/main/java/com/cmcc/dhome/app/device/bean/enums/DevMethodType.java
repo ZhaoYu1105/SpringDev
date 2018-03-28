@@ -21,12 +21,14 @@ public enum DevMethodType {
 
     WIFI_LIST("Get", "GET_WIFI_SSID_INFO", "GetSSIDInfo", "wifiList"), WIFI_SWITCH("Set", "SET_WIFI_SSID_ONOFF", "SSIDOnOff", "wifiEnable"), WIFI_SET("Set",
             "SET_WIFI_SSID_INFO", "SetSSIDInfo", "wifiConf"), DEVICE_LIST("Get", "GET_LAN_NET_INFO", "GetLanNetInfo", "deviceList"), ONLINE_REMIND("Set",
-            "SET_LAN_DEVICE_ONLINE", "SetLanDevOnline", "deviceOLRemindConf"), NET_CONTROL("Set", "SET_LAN_ACCESS", "SetLanAccess", "deviceNetAccessCtrl"), SPEED_REPORT(
-            "Set", "SET_LAN_SPEED_REPORT_POLICY", "SetReportPolicy", "deviceSpeedReportConf"), GET_SPEED("Get", "GET_LAN_SPEED_REPORT_POLICY",
-            "GetReportPolicy", "deviceSpeedReportGet"), MESSAGE("Report", "REPORT_LAN_DEVICE_ONLINE", "ReportDevOnline", "msg"), REFRESH("Report", "REFRESH",
-            "", "refresh"), GEATEWAY_SPEED("Report", "REPORT_LAN_DEVICE_SPEED", "ReportLanDevSpeed", "gatewaySpeed"), SET_HG_REBOOT("set", "SET_HG_REBOOT",
-            "HGReboot", "restartCenter"), GET_REMIND("Get", "GET_LAN_DEVICE_ONLINE", "GetLanDevOnline", "deviceOLRemindGet"), SET_HG_NAME("Set", "SET_HG_NAME",
-            "HGRename", "renameGateway"), ACCRESS("report", "increase", "increase", "deviceMsg_refresh");
+                    "SET_LAN_DEVICE_ONLINE", "SetLanDevOnline", "deviceOLRemindConf"), NET_CONTROL("Set", "SET_LAN_ACCESS", "SetLanAccess",
+                            "deviceNetAccessCtrl"), SPEED_REPORT("Set", "SET_LAN_SPEED_REPORT_POLICY", "SetReportPolicy", "deviceSpeedReportConf"), GET_SPEED(
+                                    "Get", "GET_LAN_SPEED_REPORT_POLICY", "GetReportPolicy", "deviceSpeedReportGet"), MESSAGE("Report",
+                                            "REPORT_LAN_DEVICE_ONLINE", "ReportDevOnline", "msg"), REFRESH("Report", "REFRESH", "", "refresh"), GEATEWAY_SPEED(
+                                                    "Report", "REPORT_LAN_DEVICE_SPEED", "ReportLanDevSpeed", "gatewaySpeed"), SET_HG_REBOOT("set",
+                                                            "SET_HG_REBOOT", "HGReboot", "restartCenter"), GET_REMIND("Get", "GET_LAN_DEVICE_ONLINE",
+                                                                    "GetLanDevOnline", "deviceOLRemindGet"), SET_HG_NAME("Set", "SET_HG_NAME", "HGRename",
+                                                                            "renameGateway"), ACCRESS("report", "increase", "increase", "deviceMsg_refresh");
 
     private static HashMap<String, DevMethodType> items;
 

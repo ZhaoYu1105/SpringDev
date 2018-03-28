@@ -2,7 +2,6 @@ package com.cmcc.dhome.device.server.framework;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
 import com.cmcc.dhome.device.server.framework.handlers.DeviceAuthResponseHandler;
 import com.cmcc.dhome.device.server.framework.handlers.DeviceHeartBeatResponseHandler;
@@ -11,8 +10,6 @@ import com.cmcc.dhome.device.server.framework.handlers.DeviceMessageEncoder;
 import com.cmcc.dhome.device.server.framework.handlers.DeviceMessageHandler;
 import com.cmcc.dhome.device.server.framework.handlers.EchoClientHandler;
 import com.cmcc.dhome.device.server.framework.handlers.StringToByteEncoder;
-import com.cmcc.dhome.device.server.framework.zookeeper.DeviceChannelCounter;
-import com.cmcc.zeus.base.core.spring.SpringContextUtil;
 import com.cmcc.zeus.base.net.tcp.TcpServerListener;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -49,7 +46,7 @@ public class DeviceServerListener extends TcpServerListener {
     // private String ip;
     private String        maxLength;         // 可解析消息的最大长度
     private int           tcpTimeOut;        // TCP超期时间
-    public static long    loginMax = 800;    //登录请求每秒最大处理量
+    public static long    loginMax   = 800;  // 登录请求每秒最大处理量
 
     public static boolean authStatus = true; // 当前是否接受网关登录
 
@@ -64,10 +61,11 @@ public class DeviceServerListener extends TcpServerListener {
         this.executor = new ScheduledThreadPoolExecutor(1);
 
         // 定时输出当前连接数量信息
-//        DeviceChannelCounter watcher = SpringContextUtil.getBean(DeviceChannelCounter.class);
-//        watcher.setPort(serverPort);// 用于标识服务器实例
-//        watcher.init();
-//        this.executor.scheduleAtFixedRate(watcher, 60, 60, TimeUnit.SECONDS);
+        // DeviceChannelCounter watcher =
+        // SpringContextUtil.getBean(DeviceChannelCounter.class);
+        // watcher.setPort(serverPort);// 用于标识服务器实例
+        // watcher.init();
+        // this.executor.scheduleAtFixedRate(watcher, 60, 60, TimeUnit.SECONDS);
 
         this.bossGroup = new NioEventLoopGroup(numberOfThreads, bossThreadFactory);
         this.workerGroup = new NioEventLoopGroup(numberOfThreads, workerThreadFactory);

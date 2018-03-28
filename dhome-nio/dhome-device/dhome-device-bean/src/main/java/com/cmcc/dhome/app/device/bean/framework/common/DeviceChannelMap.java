@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.cmcc.zeus.base.utils.StringUtil;
@@ -35,15 +36,29 @@ public class DeviceChannelMap {
     /**
      * 缓存网关MAC地址，及其对应的长连接对象
      */
-    private static Map<String, ConcurrentHashMap<String, SocketChannel>> channelMap = new ConcurrentHashMap<String, ConcurrentHashMap<String, SocketChannel>>();
+    private static Map<String, ConcurrentHashMap<String, SocketChannel>> channelMap        = new ConcurrentHashMap<String, ConcurrentHashMap<String, SocketChannel>>();
 
-    public static LoadingCache<Long, AtomicLong>                         counter    = CacheBuilder.newBuilder().expireAfterWrite(2, TimeUnit.SECONDS)
+    public static LoadingCache<Long, AtomicLong>                         counter           = CacheBuilder.newBuilder().expireAfterWrite(2, TimeUnit.SECONDS)
             .build(new CacheLoader<Long, AtomicLong>() {
-                                                                                                @Override
-                                                                                                public AtomicLong load(Long seconds) throws Exception {
-                                                                                                    return new AtomicLong(0);
-                                                                                                }
-                                                                                            });
+                                                                                                       @Override
+                                                                                                       public AtomicLong load(Long seconds) throws Exception {
+                                                                                                           return new AtomicLong(0);
+                                                                                                       }
+                                                                                                   });
+
+    private static AtomicInteger                                         connectionCounter = new AtomicInteger(0);
+
+    public static void increment() {
+        connectionCounter.incrementAndGet();
+    }
+
+    public static void decrement() {
+        connectionCounter.decrementAndGet();
+    }
+
+    public static int get() {
+        return connectionCounter.get();
+    }
 
     /**
      * 添加网关MAC地址及其长连接对象至缓存中
@@ -60,6 +75,8 @@ public class DeviceChannelMap {
      *          2016年5月4日 - 下午6:53:42 liujianliang@chinamobile.com create.
      */
     public static void add(String did, String sn, SocketChannel socketChannel) {
+        increment();
+        
         if (StringUtil.nullOrBlank(sn)) {
             sn = "EMPTY";
         }
@@ -118,6 +135,8 @@ public class DeviceChannelMap {
      *          2016年5月4日 - 下午6:55:37 liujianliang@chinamobile.com create.
      */
     public static SocketChannel remove(String did, String sn) {
+        decrement();
+        
         if (StringUtil.nullOrBlank(sn)) {
             sn = "EMPTY";
         }

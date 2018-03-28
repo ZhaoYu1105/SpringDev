@@ -36,13 +36,20 @@ public class DeviceClientRun extends TcpClientListener implements Runnable {
 
     String host = "172.18.38.56";
     int    port = 15683;
+    String gwid;
 
-    public static void main(String[] args) throws IOException, JoranException {
-        int total = 10000;
+    public static void main(String[] args) throws Exception {
+        int total = 1000;
         for (int i = 0; i < total; i++) {
+            String mac = StringUtil.randomMACAddress(null);
+            System.out.println("mac: " + mac);
+            
             DeviceClientRun client = new DeviceClientRun();
-            client.setServerName("Device");
+            client.setServerName("Device" + i);
+            client.setGwid(mac);
             client.setTimeoutSeconds(10);
+            
+            Thread.sleep(100);
 
             new Thread(client).start();
         }
@@ -58,17 +65,14 @@ public class DeviceClientRun extends TcpClientListener implements Runnable {
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
 
-                // 随机模拟网关MAC地址
-                String gwid = StringUtil.randomMACAddress(null);
-
                 pipeline.addLast("idleStateHandler", new IdleStateHandler(0, 0, timeoutSeconds));
                 pipeline.addLast("lineBasedFrameDecoder-8192", new LineBasedFrameDecoder(8192));// 按行('\n')解析成命令ByteBuf
                 pipeline.addLast("stringPluginMessageDecoder", new StringDecoder(CharsetUtil.UTF_8));
                 pipeline.addLast("stringToByteEncoder", new StringToByteEncoder());// 将JSON字符串类型消息转换成ByteBuf
                 pipeline.addLast("deviceMessageDecoder", new DeviceMessageDecoder());// 将JSON字符串消息转成deviceMessage对象
                 pipeline.addLast("deviceMessageEncoder", new DeviceMessageEncoder());// 将deviceMessage对象转成JSON字符串
-                pipeline.addLast("deviceAuthRequestHandler", new DeviceAuthRequestHandler(gwid, null));
-                pipeline.addLast("deviceHeartBeatHandler", new DeviceHeartBeatRequestHandler(gwid, null));
+                pipeline.addLast("deviceAuthRequestHandler", new DeviceAuthRequestHandler(getGwid(), null));
+                pipeline.addLast("deviceHeartBeatHandler", new DeviceHeartBeatRequestHandler(getGwid(), null));
                 pipeline.addLast("deviceOutboundMessageHandler", new DeviceOutboundMessageHandler());
             }
         });
@@ -90,5 +94,13 @@ public class DeviceClientRun extends TcpClientListener implements Runnable {
     @Override
     public void run() {
         startConnect(host, port);
+    }
+
+    public String getGwid() {
+        return gwid;
+    }
+
+    public void setGwid(String gwid) {
+        this.gwid = gwid;
     }
 }

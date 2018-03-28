@@ -149,7 +149,7 @@ public class DeviceAuthResponseHandler extends SimpleChannelInboundHandler<Devic
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         // log.debug("gwid值为：{}的连接将断开！", gwid);
         // if (gwid != null) {
-        // DeviceChannelMap.remove(gwid, sn);
+         DeviceChannelMap.remove(gwid, sn);
         // String value = RedisUtil.hget(GATEWAY_CONNECTION_HASH + gwid, sn);
         // if (serverInstanceName.equals(value)) {
         // // redis中存储地址与本机相同时才能进行删除操作

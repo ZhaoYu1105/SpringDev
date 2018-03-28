@@ -2,6 +2,7 @@ package com.cmcc.dhome.device.server.framework;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import com.cmcc.dhome.device.server.framework.handlers.DeviceAuthResponseHandler;
 import com.cmcc.dhome.device.server.framework.handlers.DeviceHeartBeatResponseHandler;
@@ -10,6 +11,7 @@ import com.cmcc.dhome.device.server.framework.handlers.DeviceMessageEncoder;
 import com.cmcc.dhome.device.server.framework.handlers.DeviceMessageHandler;
 import com.cmcc.dhome.device.server.framework.handlers.EchoClientHandler;
 import com.cmcc.dhome.device.server.framework.handlers.StringToByteEncoder;
+import com.cmcc.dhome.device.server.framework.util.DeviceCounter;
 import com.cmcc.zeus.base.net.tcp.TcpServerListener;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -66,6 +68,9 @@ public class DeviceServerListener extends TcpServerListener {
         // watcher.setPort(serverPort);// 用于标识服务器实例
         // watcher.init();
         // this.executor.scheduleAtFixedRate(watcher, 60, 60, TimeUnit.SECONDS);
+        
+        DeviceCounter counter = new DeviceCounter();
+        this.executor.scheduleAtFixedRate(counter, 60, 60, TimeUnit.SECONDS);
 
         this.bossGroup = new NioEventLoopGroup(numberOfThreads, bossThreadFactory);
         this.workerGroup = new NioEventLoopGroup(numberOfThreads, workerThreadFactory);

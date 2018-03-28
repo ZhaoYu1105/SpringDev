@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <!-- <typeAlias alias="MessageBo" type="com.cmcc.dhome.app.device.bean.user.MessageBo" />
+        <typeAlias alias="UserBo" type="com.cmcc.dhome.app.device.bean.user.UserBo" />
+        <typeAlias alias="UserTokenBo" type="com.cmcc.dhome.app.device.bean.user.UserTokenBo" /> -->
+        <typeAlias alias="DeviceDetailBo" type="com.cmcc.dhome.app.device.bean.device.DeviceDetailBo" />
+        <typeAlias alias="DeviceRemindSetBo" type="com.cmcc.dhome.app.device.bean.device.DeviceRemindSetBo" />
+        <typeAlias alias="DeviceRemindGetBo" type="com.cmcc.dhome.app.device.bean.device.DeviceRemindGetBo" />
+        <typeAlias alias="DeviceRemindBo" type="com.cmcc.dhome.app.device.bean.device.DeviceRemindBo" />
+        <typeAlias alias="GatewayDetailBo" type="com.cmcc.dhome.app.device.bean.device.GatewayDetail" />
+        <typeAlias alias="ExpTimesBo" type="com.cmcc.dhome.app.device.bean.speed.ExpTimesBo" />
+        <typeAlias alias="SpeedServiceBo" type="com.cmcc.dhome.app.device.bean.speed.SpeedServiceBo" />
+        <typeAlias alias="UserBindInfoBo" type="com.cmcc.dhome.app.device.bean.user.UserBindInfoBo" />
+        <typeAlias alias="DeviceInfoBo" type="com.cmcc.dhome.app.device.bean.device.DeviceInfoBo" />
+        <typeAlias alias="ExtendFeatureBo" type="com.cmcc.dhome.app.device.bean.device.ExtendFeatureBo" />
+        <typeAlias alias="GatewayAddressBo" type="com.cmcc.dhome.app.device.bean.device.GatewayAddressBo" />
+    </typeAliases>
+
+    <plugins>
+        <plugin interceptor="com.cmcc.zeus.base.core.page.PagePlugin">
+            <property name="dialect" value="mysql" />
+            <property name="pageSqlId" value=".*ListPage.*" />
+        </plugin>
+    </plugins>
+</configuration>

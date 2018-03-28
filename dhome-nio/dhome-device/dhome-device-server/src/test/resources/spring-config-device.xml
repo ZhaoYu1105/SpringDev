@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 引入配置文件 -->
+    <context:property-placeholder location="classpath*:config/*/*.properties" />
+
+    <!-- 1、用于加载其它jar中的spring配置文件 -->
+    <import resource="classpath*:/config/spring/spring-redis.xml" />
+    <import resource="classpath*:/config/spring/spring-context.xml" />
+    <!-- 2、用于加载run工程中所需的“本地”spring配置文件，这两种配置同时使用，否则会有spring配置加载及初始化顺序问题 -->
+    <import resource="config/spring/spring-jms.xml" />
+    <import resource="config/spring/spring-server.xml" />
+
+    <context:component-scan base-package="com.cmcc.dhome, com.cmcc.zeus" />
+
+    <!-- 用于初始化处理链 -->
+    <bean class="com.cmcc.zeus.base.BeanListener" />
+
+    <!-- 【Sender】设备接入服务器数据指令DeviceMessage对象通过jms发送至业务处理bp模块 -->
+    <bean id="deviceServerJmsToBpProcessor" class="com.cmcc.zeus.base.jms.processor.JmsMessageProcessor">
+        <property name="queueName" value="queue_deviceserver_to_devicebp" />
+        <property name="jmsFactory" ref="jmsFactory" />
+    </bean>
+
+    <!-- 【Sender】设备接入服务器的上报数据通过jms发送至业务处理bp模块 -->
+    <bean id="serverReportJsmToBpProcessor" class="com.cmcc.zeus.base.jms.processor.JmsMessageProcessor">
+        <property name="queueName" value="queue_deviceserver_report_devicebp_test" />
+        <property name="jmsFactory" ref="jmsFactory" />
+    </bean>
+
+    <!-- 【Subscriber】接收app设备模块的请求对象,封装处理成TCP包, 然后发送至网关服务器 -->
+    <bean id="appDeviceProcessManager" class="com.cmcc.zeus.base.processor.chain.DefaultChainMessageProcessor">
+        <constructor-arg name="forwardName" value="appDeviceMessageJMSReceiver" />
+        <constructor-arg name="processors">
+            <map>
+                <entry key="appDeviceMessageJMSReceiver">
+                    <!-- 接收app设备模块的请求对象 -->
+                    <bean class="com.cmcc.zeus.base.jms.processor.JmsTopicMessageProcessor">
+                        <property name="topicName" value="topic_appdevice_to_deviceserver" />
+                        <property name="jmsFactory" ref="jmsFactory" />
+                        <property name="forwardName" value="deviceRequestProcessor" />
+                    </bean>
+                </entry>
+                <entry key="deviceRequestProcessor">
+                    <!-- 将从JMS中接收到的APP端设备请求，转成TCP包，发给网关插件 -->
+                    <bean class="com.cmcc.dhome.device.server.framework.processor.DeviceMessageReceiveProcessor" />
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!-- 【Subscriber】接收业务处理模块的响应对象,封装处理成TCP包, 然后发送至网关服务器 -->
+    <bean id="deviceBpProcessManager" class="com.cmcc.zeus.base.processor.chain.DefaultChainMessageProcessor">
+        <constructor-arg name="forwardName" value="deviceBpMessageJMSReceiver" />
+        <constructor-arg name="processors">
+            <map>
+                <entry key="deviceBpMessageJMSReceiver">
+                    <!-- 接收业务处理模块的请求对象 -->
+                    <bean class="com.cmcc.zeus.base.jms.processor.JmsTopicMessageProcessor">
+                        <property name="topicName" value="topic_devicebp_to_deviceserver" />
+                        <property name="jmsFactory" ref="jmsFactory" />
+                        <property name="forwardName" value="deviceRequestProcessor" />
+                    </bean>
+                </entry>
+                <entry key="deviceRequestProcessor">
+                    <!-- 将从JMS中接收到的业务处理模块请求，转成TCP包，发给网关插件 -->
+                    <bean class="com.cmcc.dhome.device.server.framework.processor.DeviceMessageReceiveProcessor" />
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!-- 【Pulisher】设备接入服务器发现有重新登录的请求，将消息发送给其它服务器节点，以便删除该过期的连接 -->
+    <bean id="deviceChannelDiscardProcessor" class="com.cmcc.zeus.base.jms.processor.JmsTopicMessageProcessor">
+        <property name="topicName" value="topic_deviceserver_to_deviceserver" />
+        <property name="jmsFactory" ref="jmsFactory" />
+    </bean>
+
+    <!-- 【Subscriber】接收业务处理模块的响应对象,封装处理成TCP包, 然后发送至网关服务器 -->
+    <bean id="deviceChannelDiscardManager" class="com.cmcc.zeus.base.processor.chain.DefaultChainMessageProcessor">
+        <constructor-arg name="forwardName" value="deviceBpMessageJMSReceiver" />
+        <constructor-arg name="processors">
+            <map>
+                <entry key="deviceBpMessageJMSReceiver">
+                    <!-- 接收业务处理模块的请求对象 -->
+                    <bean class="com.cmcc.zeus.base.jms.processor.JmsTopicMessageProcessor">
+                        <property name="topicName" value="topic_deviceserver_to_deviceserver" />
+                        <property name="jmsFactory" ref="jmsFactory" />
+                        <property name="forwardName" value="deviceRequestProcessor" />
+                    </bean>
+                </entry>
+                <entry key="deviceRequestProcessor">
+                    <!-- 接收订阅消息，处理过期废弃的channel连接 -->
+                    <bean class="com.cmcc.dhome.device.server.framework.processor.DeviceChannelDiscardProcessor" />
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+    
+        
+    <!-- 【Pulisher】设备接入服务器发现有重新登录的请求，将消息发送给其它服务器节点，以便删除该过期的连接(UDP) -->
+    <bean id="udpDeviceChannelDiscardProcessor" class="com.cmcc.zeus.base.jms.processor.JmsTopicMessageProcessor">
+        <property name="topicName" value="topic_udp_deviceserver_to_deviceserver" />
+        <property name="jmsFactory" ref="jmsFactory" />
+    </bean>
+    
+</beans>

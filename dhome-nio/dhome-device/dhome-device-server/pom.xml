@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.cmcc.dhome</groupId>
+        <artifactId>dhome-device</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>dhome-device-server</artifactId>
+    <name>dhome-device-server</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <release.name>device-run</release.name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cmcc.zeus</groupId>
+            <artifactId>zeus-base-net</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.cmcc.zeus</groupId>
+                    <artifactId>zeus-base-utils</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.cmcc.dhome</groupId>
+            <artifactId>dhome-device-bean</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <resources>
+            <!-- 将除了脚本和环境相关的配置文件外，都拷贝到smart/conf目录下 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <targetPath>${project.build.directory}/${release.name}/conf</targetPath>
+                <excludes>
+                    <exclude>script/**</exclude>
+                </excludes>
+            </resource>
+            <!-- 将script脚本目录下内容，拷贝到smart/bin目录下 -->
+            <resource>
+                <directory>src/main/resources/script</directory>
+                <targetPath>${project.build.directory}/${release.name}/bin</targetPath>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- 将本工程依赖的所有jar包, 拷贝输出到smart/lib目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeTypes>jar</includeTypes>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <type>jar</type>
+                            <outputDirectory>${project.build.directory}/${release.name}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 将本工程的jar包打包输出到smart/lib目录中 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/${release.name}/lib</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

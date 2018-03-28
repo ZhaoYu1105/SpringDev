@@ -1,0 +1,28 @@
+/target/
+
+#IDEA#
+*.iml
+.idea/
+
+#eclipse#
+.classpath
+.settings/
+.metadata/
+.project
+Servers/
+
+##class file##
+*.class
+
+# compression file
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar  
+*.rar
+*.tar
+*.zip  
+*.via
+*.tmp
+*.err

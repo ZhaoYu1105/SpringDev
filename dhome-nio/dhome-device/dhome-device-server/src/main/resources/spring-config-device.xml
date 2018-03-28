@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 引入配置文件 -->
+    <context:property-placeholder location="file:/opt/config/deviceserver/deviceserver-conf.properties" />
+
+    <!-- 1、用于加载其它jar中的spring配置文件 -->
+    <import resource="classpath*:/config/spring/spring-context.xml" />
+    <!-- 2、用于加载run工程中所需的“本地”spring配置文件，这两种配置同时使用，否则会有spring配置加载及初始化顺序问题 -->
+    <import resource="config/spring/spring-server.xml" />
+
+    <context:component-scan base-package="com.cmcc.dhome, com.cmcc.zeus" />
+
+    <!-- 用于初始化处理链 -->
+    <bean class="com.cmcc.zeus.base.BeanListener" />
+    
+</beans>

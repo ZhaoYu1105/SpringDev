@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="com.cmcc.dhome.device.server.framework.DeviceServerListener">
+        <!-- 设置为0，即默认取系统处理器核心数两倍，如果设置为>0，则取numberOfThreads -->
+        <property name="numberOfThreads" value="${dsListener.numberOfThreads}" />
+        <!-- 181秒没有收到任何消息(心跳间隔60s，即3次超过心跳时间)，则断开与客户端的连接 -->
+        <property name="timeoutSeconds" value="${dsListener.timeoutSeconds}" />
+        <property name="maxLength" value="${dsListener.maxLength}" />        
+        <!-- TCP超期断开时间，单位秒 -->
+        <property name="tcpTimeOut" value="${dsListener.tcpTimeOut}" />
+        <!-- 登录请求每秒最大处理数 -->
+        <property name="loginMax" value="5" />
+    </bean>
+ 
+</beans>

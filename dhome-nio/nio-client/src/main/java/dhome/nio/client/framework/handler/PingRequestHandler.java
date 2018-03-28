@@ -6,6 +6,14 @@ import org.slf4j.LoggerFactory;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+/**
+ * 
+ * 
+ * @author seasail[miaoyunhai@cmhi.chinamobile.com]
+ * @date 2018年3月27日 - 下午1:54:35
+ * @history 
+ * 		 2018年3月27日 - 下午1:54:35 seasail[miaoyunhai@cmhi.chinamobile.com] create.
+ */
 public class PingRequestHandler extends ChannelInboundHandlerAdapter {
 
     final Logger log = LoggerFactory.getLogger(this.getClass().getName());
